@@ -3,11 +3,7 @@ package studios.codelight.smartlogin;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,12 +13,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
-public class Main2Activity extends ActionBarActivity
+import studios.codelight.smartlogin.Fragment.pagerAdapter;
+import studios.codelight.smartlogin.Util.BackPressCloseHandler;
+
+public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private BackPressCloseHandler backPressCloseHandler;
-    int MAX_PAGE = 3;                         //View Pager의 총 페이지 갯수를 나타내는 변수 선언
-    Fragment cur_fragment = new Fragment();   //현재 Viewpager가 가리키는 Fragment를 받을 변수 선언
+
+
+
+    ViewPager vp;
+
 
 
     @Override
@@ -53,11 +56,34 @@ public class Main2Activity extends ActionBarActivity
 
 
         backPressCloseHandler = new BackPressCloseHandler(this);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);        //Viewpager 선언 및 초기화
-        viewPager.setAdapter(new adapter(getSupportFragmentManager()));     //선언한 viewpager에 adapter를 연결
+
+
+
+        /*
+        뷰페이저
+         */
+
+        vp = (ViewPager)findViewById(R.id.vp);
+        Button btn_first = (Button)findViewById(R.id.btn_first);
+        Button btn_second = (Button)findViewById(R.id.btn_second);
+        Button btn_third = (Button)findViewById(R.id.btn_third);
+
+        vp.setAdapter(new pagerAdapter(getSupportFragmentManager()));
+        vp.setCurrentItem(0);
+
+        btn_first.setOnClickListener(movePageListener);
+        btn_first.setTag(0);
+        btn_second.setOnClickListener(movePageListener);
+        btn_second.setTag(1);
+        btn_third.setOnClickListener(movePageListener);
+        btn_third.setTag(2);
+
+
 
 
     }//oncreate end
+
+
 
 
     @Override
@@ -117,36 +143,17 @@ public class Main2Activity extends ActionBarActivity
         return true;
     }
 
-
-    private class adapter extends FragmentPagerAdapter {                    //adapter클래스
-        public adapter(FragmentManager fm) {
-            super(fm);
-        }
-
+/*
+ 뷰페이저
+ */
+    View.OnClickListener movePageListener = new View.OnClickListener()
+    {
         @Override
-        public Fragment getItem(int position) {
-            if (position < 0 || MAX_PAGE <= position)        //가리키는 페이지가 0 이하거나 MAX_PAGE보다 많을 시 null로 리턴
-                return null;
-            switch (position) {              //포지션에 맞는 Fragment찾아서 cur_fragment변수에 대입
-                case 0:
-                    cur_fragment = new page_1();
-                    break;
-
-                case 1:
-                    cur_fragment = new page_2();
-                    break;
-
-                case 2:
-                    cur_fragment = new page_3();
-                    break;
-            }
-
-            return cur_fragment;
+        public void onClick(View v)
+        {
+            int tag = (int) v.getTag();
+            vp.setCurrentItem(tag);
         }
+    };
 
-        @Override
-        public int getCount() {
-            return MAX_PAGE;
-        }
-    }
-}
+}//class end

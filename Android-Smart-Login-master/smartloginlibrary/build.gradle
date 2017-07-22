@@ -36,7 +36,7 @@ dependencies {
     // Facebook sdk
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     // Google Play Services
-    compile 'com.google.android.gms:play-services-auth:10.2.0'
+    compile 'com.google.android.gms:play-services-auth:11.0.2'
     compile 'com.google.firebase:firebase-auth:10.2.0'
     // GSON lib
     compile 'com.google.code.gson:gson:2.7'
